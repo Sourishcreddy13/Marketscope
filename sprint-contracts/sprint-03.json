@@ -1,0 +1,28 @@
+{
+  "sprint": "S03",
+  "goal": "Order placement, lifecycle, and execution",
+  "acceptance_criteria": [
+    "AC-06",
+    "AC-07",
+    "AC-08"
+  ],
+  "nfrs": [
+    "NFR-01",
+    "NFR-02",
+    "NFR-04",
+    "NFR-06",
+    "NFR-08"
+  ],
+  "activation": [
+    "planner",
+    "order-lifecycle-agent",
+    "generator",
+    "test-engineer",
+    "security-reviewer",
+    "evaluator"
+  ],
+  "exit_gate": "Order state machine, funds validation, and executed-order immutability pass evaluator.",
+  "stories": [
+    "order"
+  ]
+}

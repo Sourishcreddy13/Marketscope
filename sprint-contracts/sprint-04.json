@@ -1,0 +1,32 @@
+{
+  "sprint": "S04",
+  "goal": "Analytics, UI, E2E, CI, and final hardening",
+  "acceptance_criteria": [
+    "AC-09",
+    "AC-10"
+  ],
+  "nfrs": [
+    "NFR-01",
+    "NFR-02",
+    "NFR-03",
+    "NFR-04",
+    "NFR-05",
+    "NFR-06",
+    "NFR-07",
+    "NFR-08"
+  ],
+  "activation": [
+    "planner",
+    "portfolio-analytics-agent",
+    "ui-designer",
+    "generator",
+    "test-engineer",
+    "design-critic",
+    "security-reviewer",
+    "evaluator"
+  ],
+  "exit_gate": "All AC-01..AC-10 and NFR-01..NFR-08 pass, frontend builds, E2E passes, and coverage evidence is generated.",
+  "stories": [
+    "analytics"
+  ]
+}

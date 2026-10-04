@@ -1,0 +1,89 @@
+stages: [validate, test, e2e, review]
+
+variables:
+  UV_FROZEN: "1"
+  ENVIRONMENT: test
+  GIT_DEPTH: "0"          # full history: migration immutability and PR-only checks need the base ref
+
+default:
+  interruptible: true
+
+.python: &python
+  image: python:3.13-slim
+  before_script:
+    - pip install --quiet uv
+    - uv sync --frozen
+
+backend_validate:
+  <<: *python
+  stage: validate
+  script:
+    - python -m compileall -q app tests scripts migrations
+    - uv run ruff check app tests scripts migrations
+    - uv run mypy app
+    - uv run lint-imports
+    - bash .claude/hooks/math-precision-check.sh --all
+    - uv run python .claude/hooks/role_boundary.py
+    - uv run python scripts/migration_manifest.py check
+    - |
+      if [ -n "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
+        git fetch --quiet origin "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+        uv run python scripts/migration_manifest.py check --base "origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+      fi
+
+pr_only_history:
+  image: alpine/git:latest
+  stage: validate
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - apk add --no-cache bash
+    - bash scripts/check_pr_only_history.sh "origin/$CI_DEFAULT_BRANCH"
+  allow_failure: false
+
+backend_test:
+  <<: *python
+  stage: test
+  script:
+    - uv run pytest --cov=app --cov-report=xml:coverage.xml --cov-report=term-missing
+  coverage: '/TOTAL.*\s+(\d+%)$/'
+  artifacts:
+    when: always
+    paths: [coverage.xml]
+    reports:
+      coverage_report: {coverage_format: cobertura, path: coverage.xml}
+
+frontend_test:
+  stage: test
+  image: node:24
+  script:
+    - cd frontend
+    - npm ci
+    - npm run lint
+    - npm run test
+    - npm run build
+
+playwright_e2e:
+  stage: e2e
+  image: mcr.microsoft.com/playwright:v1.55.0-noble
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq python3 python3-pip python3-venv
+    - pip3 install --quiet --break-system-packages uv
+    - uv sync --frozen
+    - cd frontend && npm ci && cd ..
+  script:
+    - cd frontend && npx playwright test      # playwright.config.ts starts the migrated backend and frontend
+  artifacts:
+    when: always
+    paths: [frontend/playwright-report/, frontend/test-results/]
+
+claude_code_review:
+  stage: review
+  image: node:24
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $ANTHROPIC_API_KEY'
+  script:
+    - bash scripts/ci/claude_review.sh
+  artifacts:
+    when: always
+    paths: [specs/reviews/ci-claude-review.md]

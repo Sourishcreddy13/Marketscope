@@ -1,0 +1,139 @@
+{
+  "project": {
+    "name": "MarketScope",
+    "version": "1.0.0"
+  },
+  "stack": {
+    "frontend": {
+      "framework": "react",
+      "language": "typescript",
+      "package_manager": "npm",
+      "dev_server": "http://127.0.0.1:5173"
+    },
+    "backend": {
+      "framework": "fastapi",
+      "language": "python",
+      "python_version": "3.13",
+      "package_manager": "uv",
+      "dev_server": "http://127.0.0.1:8000"
+    },
+    "database": {
+      "primary": "sqlite"
+    },
+    "testing": {
+      "unit": "pytest",
+      "frontend_unit": "vitest",
+      "e2e": "playwright"
+    }
+  },
+  "paths": {
+    "app": "app",
+    "tests": "tests",
+    "migrations": "migrations",
+    "frontend": "frontend",
+    "specs": "specs",
+    "docs": "docs",
+    "data": "data"
+  },
+  "layers": [
+    {
+      "name": "domain",
+      "path": "app/domain",
+      "rank": 1
+    },
+    {
+      "name": "models",
+      "path": "app/models",
+      "rank": 2
+    },
+    {
+      "name": "core",
+      "path": "app/core",
+      "rank": 3
+    },
+    {
+      "name": "repositories",
+      "path": "app/repositories",
+      "rank": 4
+    },
+    {
+      "name": "services",
+      "path": "app/services",
+      "rank": 5
+    },
+    {
+      "name": "api",
+      "path": "app/api",
+      "rank": 6
+    }
+  ],
+  "architecture": [
+    {
+      "name": "domain",
+      "path": "app/domain",
+      "rank": 1
+    },
+    {
+      "name": "models",
+      "path": "app/models",
+      "rank": 2
+    },
+    {
+      "name": "core",
+      "path": "app/core",
+      "rank": 3
+    },
+    {
+      "name": "repositories",
+      "path": "app/repositories",
+      "rank": 4
+    },
+    {
+      "name": "services",
+      "path": "app/services",
+      "rank": 5
+    },
+    {
+      "name": "api",
+      "path": "app/api",
+      "rank": 6
+    }
+  ],
+  "quality_gates": {
+    "min_unit_tests": 20,
+    "min_architecture_tests": 3,
+    "required_ac_ids": [
+      "AC-01",
+      "AC-02",
+      "AC-03",
+      "AC-04",
+      "AC-05",
+      "AC-06",
+      "AC-07",
+      "AC-08",
+      "AC-09",
+      "AC-10"
+    ]
+  },
+  "local": {
+    "backend_url": "http://127.0.0.1:8000",
+    "frontend_url": "http://127.0.0.1:5173",
+    "start_commands": [
+      "uv run alembic upgrade head",
+      "uv run python -m scripts.seed_data",
+      "uv run uvicorn app.main:app --reload --port 8000",
+      "cd frontend && npm run dev"
+    ]
+  },
+  "mode": "full",
+  "api_base_url": "http://127.0.0.1:8000",
+  "ui_base_url": "http://127.0.0.1:5173",
+  "health_check": "/health",
+  "verification": {
+    "mode": "local",
+    "health_check": {
+      "url": "http://127.0.0.1:8000/health",
+      "timeout_seconds": 1
+    }
+  }
+}

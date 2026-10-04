@@ -1,0 +1,1 @@
+"""MarketScope application package."""

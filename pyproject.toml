@@ -1,0 +1,118 @@
+[project]
+name = "marketscope"
+version = "1.0.0"
+description = "MarketScope retail brokerage and portfolio analytics platform"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.30,<1",
+  "sqlalchemy>=2.0,<3",
+  "alembic>=1.14,<2",
+  "pydantic>=2.8,<3",
+  "pydantic-settings>=2.7,<3",
+  "PyJWT>=2.9,<3",
+  "argon2-cffi>=23.1,<26",
+  "python-dotenv>=1.0,<2",
+  "email-validator>=2.2,<3",
+  "claude-agent-sdk>=0.1,<1",
+  "jsonschema>=4",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3,<9",
+  "pytest-cov>=6,<7",
+  "httpx>=0.28,<1",
+  "ruff>=0.11,<1",
+  "mypy>=1.15,<2",
+  "import-linter>=2.1,<3",
+]
+
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+  "ac01: AC-01 registration",
+  "ac02: AC-02 role administration",
+  "ac03: AC-03 stock catalog",
+  "ac04: AC-04 watchlist creation",
+  "ac05: AC-05 atomic watchlist updates",
+  "ac06: AC-06 order placement",
+  "ac07: AC-07 order lifecycle",
+  "ac08: AC-08 insufficient funds",
+  "ac09: AC-09 portfolio statistics",
+  "ac10: AC-10 daily statistics",
+  "nfr01: NFR-01 fixed point",
+  "nfr02: NFR-02 append only",
+  "nfr03: NFR-03 password security",
+  "nfr04: NFR-04 authorization",
+  "nfr05: NFR-05 migrations",
+  "nfr06: NFR-06 structured logging",
+  "nfr07: NFR-07 health",
+  "nfr08: NFR-08 architecture",
+]
+
+[tool.ruff]
+line-length = 140
+target-version = "py313"
+exclude = [".venv", "coverage.xml"]
+extend-exclude = ["frontend/node_modules", "frontend/dist"]
+
+[tool.ruff.lint]
+# Explicit rule set so the lint gate does not change with the ruff release.
+select = ["E4", "E7", "E9", "F", "I", "B"]
+ignore = ["B008"]  # FastAPI dependency injection uses Depends() in argument defaults by design
+
+[tool.ruff.lint.per-file-ignores]
+"migrations/env.py" = ["E402"]
+
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+warn_unused_ignores = true
+
+# ---------------------------------------------------------------------------------------------
+# Architecture contracts (NFR-08), enforced by `lint-imports` (CI job + tests/architecture).
+# ---------------------------------------------------------------------------------------------
+[tool.importlinter]
+root_packages = ["app", "fastapi", "sqlalchemy", "pydantic"]
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Layers: api > services > repositories > models > domain"
+type = "layers"
+layers = ["app.api", "app.services", "app.repositories", "app.models", "app.domain"]
+
+[[tool.importlinter.contracts]]
+name = "Domain is pure: no framework, persistence or outer-layer imports"
+type = "forbidden"
+source_modules = ["app.domain"]
+forbidden_modules = ["app.api", "app.services", "app.repositories", "app.models", "app.core", "fastapi", "sqlalchemy", "pydantic"]
+
+[[tool.importlinter.contracts]]
+name = "No HTTP framework below the controller layer"
+type = "forbidden"
+source_modules = ["app.services", "app.repositories", "app.models", "app.domain", "app.core.db", "app.core.security"]
+forbidden_modules = ["fastapi"]
+
+[[tool.importlinter.contracts]]
+name = "Core infrastructure does not depend on application layers"
+type = "forbidden"
+source_modules = ["app.core"]
+forbidden_modules = ["app.api", "app.services", "app.repositories"]
+
+[[tool.importlinter.contracts]]
+name = "Controllers do not query the database directly (repositories only)"
+type = "forbidden"
+source_modules = ["app.api"]
+forbidden_modules = ["sqlalchemy"]
+allow_indirect_imports = true  # only direct imports from controllers are forbidden
+ignore_imports = ["app.api.* -> sqlalchemy.orm"]  # Session type for dependency injection only

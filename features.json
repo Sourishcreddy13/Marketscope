@@ -1,0 +1,70 @@
+{
+  "features": [
+    {
+      "id": "F001",
+      "title": "User management",
+      "layer": "backend",
+      "group": "SPRINT-01",
+      "estimate": "M",
+      "passes": false,
+      "last_evaluated": null,
+      "failure_reason": "Baseline application is implemented; Harness evaluator has not yet run the full local API + Playwright gate.",
+      "failure_layer": "infrastructure"
+    },
+    {
+      "id": "F002",
+      "title": "Stock catalog",
+      "layer": "backend",
+      "group": "SPRINT-01",
+      "estimate": "M",
+      "passes": false,
+      "last_evaluated": null,
+      "failure_reason": "Baseline application is implemented; Harness evaluator has not yet run the full local API + Playwright gate.",
+      "failure_layer": "infrastructure"
+    },
+    {
+      "id": "F003",
+      "title": "Watchlists",
+      "layer": "backend",
+      "group": "SPRINT-02",
+      "estimate": "M",
+      "passes": false,
+      "last_evaluated": null,
+      "failure_reason": "Baseline application is implemented; Harness evaluator has not yet run the full local API + Playwright gate.",
+      "failure_layer": "infrastructure"
+    },
+    {
+      "id": "F004",
+      "title": "Portfolio",
+      "layer": "backend",
+      "group": "SPRINT-02",
+      "estimate": "M",
+      "passes": false,
+      "last_evaluated": null,
+      "failure_reason": "Baseline application is implemented; Harness evaluator has not yet run the full local API + Playwright gate.",
+      "failure_layer": "infrastructure"
+    },
+    {
+      "id": "F005",
+      "title": "Orders",
+      "layer": "backend",
+      "group": "SPRINT-03",
+      "estimate": "L",
+      "passes": false,
+      "last_evaluated": null,
+      "failure_reason": "Baseline application is implemented; Harness evaluator has not yet run the full local API + Playwright gate.",
+      "failure_layer": "infrastructure"
+    },
+    {
+      "id": "F006",
+      "title": "Analytics and UI",
+      "layer": "fullstack",
+      "group": "SPRINT-04",
+      "estimate": "L",
+      "passes": false,
+      "last_evaluated": null,
+      "failure_reason": "Baseline application is implemented; Harness evaluator has not yet run the full local API + Playwright gate.",
+      "failure_layer": "infrastructure"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "portfolio": {
+    "type": "object",
+    "required": ["total_invested", "current_value", "absolute_pnl", "percent_pnl"],
+    "properties": {
+      "total_invested": {"type": "string"},
+      "current_value": {"type": "string"},
+      "absolute_pnl": {"type": "string"},
+      "percent_pnl": {"type": "string"}
+    }
+  }
+}

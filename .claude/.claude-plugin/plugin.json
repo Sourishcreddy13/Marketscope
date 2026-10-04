@@ -1,0 +1,5 @@
+{
+  "name": "marketscope-claude-substrate",
+  "version": "1.0.0",
+  "description": "MarketScope trading-domain extension for Claude Harness Engine"
+}

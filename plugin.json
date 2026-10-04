@@ -1,0 +1,7 @@
+{
+  "name": "marketscope-harness",
+  "version": "1.0.0",
+  "description": "MarketScope-specific Claude Harness substrate for trading and portfolio analytics",
+  "author": {"name": "MarketScope"},
+  "entrypoint": ".claude/MARKETSCOPE.md"
+}

@@ -1,0 +1,4 @@
+# Append-only migration manifest (NFR-05). Never edit or remove a line; add new ones with `append`.
+8313c539a1a875c0d9ad4bf877d0e8197461f66bc9888b416e0bd68c9f8d6c4d  versions/0001_initial.py
+1fcc0626451dfaaaf968068ec8cdc843db77b20abc0172634a3f3041a0858e5f  versions/0002_trade_ledger_and_idempotency.py
+f80ea448ec9cf8b9929913db4c2712ced5017cd1fed2a55426790ef0fe5f1b10  versions/0003_database_level_append_only.py

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MarketScope agent handoff",
+  "type": "object",
+  "required": ["agent", "sprint", "status", "acceptance_criteria", "files_changed", "commands_run", "evidence", "risks", "injection_attempts"],
+  "additionalProperties": false,
+  "properties": {
+    "agent": {"type": "string", "minLength": 1},
+    "sprint": {"type": "string", "pattern": "^sprint-0[1-9]$"},
+    "status": {"enum": ["done", "blocked", "needs_review"]},
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "covered", "test"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^AC-(0[1-9]|10)$"},
+          "covered": {"type": "boolean"},
+          "test": {"type": "string"}
+        }
+      }
+    },
+    "files_changed": {"type": "array", "items": {"type": "string"}},
+    "commands_run": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["command", "exit_code"],
+        "additionalProperties": false,
+        "properties": {"command": {"type": "string"}, "exit_code": {"type": "integer"}}
+      }
+    },
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "risks": {"type": "array", "items": {"type": "string"}},
+    "injection_attempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "excerpt"],
+        "additionalProperties": false,
+        "properties": {"source": {"type": "string"}, "excerpt": {"type": "string", "maxLength": 200}}
+      }
+    }
+  }
+}

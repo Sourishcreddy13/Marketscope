@@ -1,0 +1,28 @@
+{
+  "sprint": "S02",
+  "goal": "Watchlists and portfolio foundation",
+  "acceptance_criteria": [
+    "AC-04",
+    "AC-05",
+    "AC-09"
+  ],
+  "nfrs": [
+    "NFR-01",
+    "NFR-04",
+    "NFR-05",
+    "NFR-08"
+  ],
+  "activation": [
+    "planner",
+    "watchlist-validator",
+    "portfolio-analytics-agent",
+    "generator",
+    "test-engineer",
+    "evaluator"
+  ],
+  "exit_gate": "Watchlist operations are atomic and portfolio calculations are Decimal-based and customer-scoped.",
+  "stories": [
+    "watchlist",
+    "portfolio"
+  ]
+}

@@ -1,0 +1,7 @@
+=== Session 1 ===
+current_group: sprint-01
+
+groups_completed: []
+groups_remaining: [sprint-01, sprint-02, sprint-03, sprint-04]
+last_commit: baseline-complete
+next_action: run Harness evaluator in local mode; then use Claude agents for incremental changes.
